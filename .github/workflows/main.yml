@@ -1,0 +1,28 @@
+name: Deployment
+on:
+  push:
+    branches:
+    - master
+    - "*"
+  workflow_dispatch:
+
+jobs:
+  deploy-master:
+    name: Deploy master
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+      - name: deploy
+        uses: milanmk/actions-file-deployer@master
+        with:
+          remote-protocol: "sftp"
+          remote-host: ${{ secrets.FTP_HOST }}
+          remote-user: ${{ secrets.FTP_USERNAME }}
+          remote-password: ${{ secrets.FTP_PASSWORD }}
+          remote-path: ${{ vars.FTP_PATH }}
+          remote-port: 22
+          sync: delta
