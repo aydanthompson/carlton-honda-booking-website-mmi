@@ -2,7 +2,8 @@
     "name": "aydan/carltonhondawebsitemmi",
     "description": "Carlton Honda Website",
     "require": {
-        "php": ">=7.0.0"
+        "php": ">=7.0.0",
+        "filp/whoops": "~2.1"
     },
     "autoload": {
         "psr-4": {
