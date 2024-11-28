@@ -1,0 +1,12 @@
+{
+    "name": "aydan/carltonhondawebsitemmi",
+    "description": "Carlton Honda Website",
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CarltonHonda\\": "src/"
+        }
+    }
+}
