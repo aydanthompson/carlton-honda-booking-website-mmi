@@ -32,12 +32,12 @@ if ($environment !== 'production') {
 }
 $whoops->register();
 
-$injector = require 'Dependencies.php';
+$injector = require __DIR__ . '/Dependencies.php';
 
 $request = $injector->make(Request::class);
 $response = $injector->make(Response::class);
 
-// Load routes from Routes.php
+// Load routes.
 $routesConfig = require __DIR__ . '/Routes.php';
 $routes = new RouteCollection();
 foreach ($routesConfig['routes'] as $name => $route) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CarltonHonda\Controller;
 
+use CarltonHonda\Template\Renderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -11,18 +12,22 @@ class Homepage
 {
   private $request;
   private $response;
+  private $renderer;
 
-  public function __construct(Request $request, Response $response)
-  {
+  public function __construct(
+    Request $request,
+    Response $response,
+    Renderer $renderer
+  ) {
     $this->request = $request;
     $this->response = $response;
+    $this->renderer = $renderer;
   }
 
   public function show()
   {
-    $content = '<h1>Hello, world!</h1>';
-    $content .= '<p>Hello ' . $this->request->get('name', 'stranger') . '!<p>';
-    $this->response->setContent($content);
-    return $this->response;
+    $data = ['name' => $this->request->get('name', 'stranger')];
+    $html = $this->renderer->render('Homepage', $data);
+    $this->response->setContent($html);
   }
 }

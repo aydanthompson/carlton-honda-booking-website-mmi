@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+use CarltonHonda\Controller\Homepage;
+
 return [
   'routes' => [
     'hello_world' => [
       'path' => '/',
-      '_controller' => [CarltonHonda\Controller\Homepage::class, 'show']
+      '_controller' => [Homepage::class, 'show']
     ],
     'another_route' => [
       'path' => '/another-route',
