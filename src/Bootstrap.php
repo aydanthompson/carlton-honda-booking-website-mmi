@@ -32,8 +32,10 @@ if ($environment !== 'production') {
 }
 $whoops->register();
 
-$request = new Request($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
-$response = new Response();
+$injector = require 'Dependencies.php';
+
+$request = $injector->make(Request::class);
+$response = $injector->make(Response::class);
 
 // Load routes from Routes.php
 $routesConfig = require __DIR__ . '/Routes.php';
@@ -54,13 +56,15 @@ try {
 
   if (is_array($controller)) {
     // Controller is a class name and method.
-    $class = new $controller[0]($response);
+    $className = $controller[0];
+    $class = $injector->make($className);
     $method = $controller[1];
     $controllerInstance = [$class, $method];
   } else {
     // Controller is a callable.
     $controllerInstance = $controller;
   }
+
   call_user_func($controllerInstance, $attributes);
 } catch (ResourceNotFoundException $e) {
   $response->setContent('404 - Page not found');
