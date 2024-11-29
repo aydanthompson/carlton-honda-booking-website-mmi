@@ -4,7 +4,8 @@
     "require": {
         "php": ">=7.0.0",
         "filp/whoops": "~2.1",
-        "symfony/http-foundation": "^5.4"
+        "symfony/http-foundation": "^5.4",
+        "symfony/routing": "^5.4"
     },
     "autoload": {
         "psr-4": {
