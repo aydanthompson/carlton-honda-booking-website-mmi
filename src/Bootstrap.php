@@ -39,7 +39,7 @@ $response = new Response();
 $routesConfig = require __DIR__ . '/Routes.php';
 $routes = new RouteCollection();
 foreach ($routesConfig['routes'] as $name => $route) {
-  $routes->add($name, new Route($route['path'], ['_controller' => $route['controller']]));
+  $routes->add($name, new Route($route['path'], ['_controller' => $route['_controller']]));
 }
 
 // Match the request to a route.
@@ -51,7 +51,17 @@ try {
   $attributes = $matcher->match($request->getPathInfo());
   $controller = $attributes['_controller'];
   unset($attributes['_controller']);
-  call_user_func($controller, $attributes);
+
+  if (is_array($controller)) {
+    // Controller is a class name and method.
+    $class = new $controller[0];
+    $method = $controller[1];
+    $controllerInstance = [$class, $method];
+  } else {
+    // Controller is a callable.
+    $controllerInstance = $controller;
+  }
+  call_user_func($controllerInstance, $attributes);
 } catch (ResourceNotFoundException $e) {
   $response->setContent('404 - Page not found');
   $response->setStatusCode(404);

@@ -5,14 +5,12 @@ declare(strict_types=1);
 return [
   'routes' => [
     'hello_world' => [
-      'path' => '/hello-world',
-      'controller' => function () {
-        echo 'Hello, world!';
-      }
+      'path' => '/',
+      '_controller' => [CarltonHonda\Controller\Homepage::class, 'show']
     ],
     'another_route' => [
       'path' => '/another-route',
-      'controller' => function () {
+      '_controller' => function () {
         echo 'This works too!';
       }
     ]
