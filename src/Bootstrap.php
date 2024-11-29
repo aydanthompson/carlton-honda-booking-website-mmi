@@ -54,7 +54,7 @@ try {
 
   if (is_array($controller)) {
     // Controller is a class name and method.
-    $class = new $controller[0];
+    $class = new $controller[0]($response);
     $method = $controller[1];
     $controllerInstance = [$class, $method];
   } else {
