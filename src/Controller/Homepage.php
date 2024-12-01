@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CarltonHonda\Controller;
 
-use CarltonHonda\Template\Renderer;
+use CarltonHonda\Template\FrontendRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,7 +17,7 @@ class Homepage
   public function __construct(
     Request $request,
     Response $response,
-    Renderer $renderer
+    FrontendRenderer $renderer
   ) {
     $this->request = $request;
     $this->response = $response;

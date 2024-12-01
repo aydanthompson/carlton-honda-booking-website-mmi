@@ -3,8 +3,12 @@
 declare(strict_types=1);
 
 use Auryn\Injector;
+use CarltonHonda\Menu\ArrayMenuReader;
+use CarltonHonda\Menu\MenuReader;
 use CarltonHonda\Page\FilePageReader;
 use CarltonHonda\Page\PageReader;
+use CarltonHonda\Template\FrontendRenderer;
+use CarltonHonda\Template\FrontendTwigRenderer;
 use CarltonHonda\Template\MustacheRenderer;
 use CarltonHonda\Template\Renderer;
 use CarltonHonda\Template\TwigRenderer;
@@ -47,5 +51,10 @@ $injector->define(FilePageReader::class, [
 
 $injector->alias(PageReader::class, FilePageReader::class);
 $injector->share(FilePageReader::class);
+
+$injector->alias(FrontendRenderer::class, FrontendTwigRenderer::class);
+
+$injector->alias(MenuReader::class, ArrayMenuReader::class);
+$injector->share(ArrayMenuReader::class);
 
 return $injector;

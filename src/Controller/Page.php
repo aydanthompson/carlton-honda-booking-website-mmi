@@ -6,7 +6,7 @@ namespace CarltonHonda\Controller;
 
 use CarltonHonda\Page\InvalidPageException;
 use CarltonHonda\Page\PageReader;
-use CarltonHonda\Template\Renderer;
+use CarltonHonda\Template\FrontendRenderer;
 use Symfony\Component\HttpFoundation\Response;
 
 class Page
@@ -17,7 +17,7 @@ class Page
 
   public function __construct(
     Response $response,
-    Renderer $renderer,
+    FrontendRenderer $renderer,
     PageReader $pageReader
   ) {
     $this->response = $response;
