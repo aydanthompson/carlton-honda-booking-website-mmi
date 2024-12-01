@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Auryn\Injector;
+use CarltonHonda\Page\FilePageReader;
+use CarltonHonda\Page\PageReader;
 use CarltonHonda\Template\MustacheRenderer;
 use CarltonHonda\Template\Renderer;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,5 +33,12 @@ $injector->define('Mustache_Engine', [
     ]),
   ],
 ]);
+
+$injector->define(FilePageReader::class, [
+  ':pageFolder' => __DIR__ . '/../pages',
+]);
+
+$injector->alias(PageReader::class, FilePageReader::class);
+$injector->share(FilePageReader::class);
 
 return $injector;

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use CarltonHonda\Controller\Homepage;
+use CarltonHonda\Controller\Page;
 
 return [
   'routes' => [
@@ -15,6 +16,10 @@ return [
       '_controller' => function () {
         echo 'This works too!';
       }
+    ],
+    'slug' => [
+      'path' => '/{slug}',
+      '_controller' => [Page::class, 'show']
     ]
   ]
 ];
