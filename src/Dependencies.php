@@ -7,6 +7,7 @@ use CarltonHonda\Menu\ArrayMenuReader;
 use CarltonHonda\Menu\MenuReader;
 use CarltonHonda\Page\FilePageReader;
 use CarltonHonda\Page\PageReader;
+use CarltonHonda\Service\UserRegistration;
 use CarltonHonda\Template\FrontendRenderer;
 use CarltonHonda\Template\FrontendTwigRenderer;
 use CarltonHonda\Template\MustacheRenderer;
@@ -15,6 +16,8 @@ use CarltonHonda\Template\TwigRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+
+include __DIR__ . '../../database_config.php';
 
 $injector = new Injector();
 
@@ -56,5 +59,14 @@ $injector->alias(FrontendRenderer::class, FrontendTwigRenderer::class);
 
 $injector->alias(MenuReader::class, ArrayMenuReader::class);
 $injector->share(ArrayMenuReader::class);
+
+$injector->share(PDO::class);
+$injector->define(PDO::class, [
+  ':dsn' => "mysql:host=$db_host;dbname=$db_name",
+  ':username' => $db_user,
+  ':passwd' => $db_pass,
+]);
+
+$injector->share(UserRegistration::class);
 
 return $injector;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use CarltonHonda\Controller\Homepage;
 use CarltonHonda\Controller\Page;
+use CarltonHonda\Controller\Register;
 
 return [
   'routes' => [
@@ -11,11 +12,9 @@ return [
       'path' => '/',
       '_controller' => [Homepage::class, 'show']
     ],
-    'another_route' => [
-      'path' => '/another-route',
-      '_controller' => function () {
-        echo 'This works too!';
-      }
+    'register' => [
+      'path' => '/register',
+      '_controller' => [Register::class, 'show']
     ],
     'slug' => [
       'path' => '/{slug}',
