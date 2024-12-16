@@ -7,6 +7,7 @@ use CarltonHonda\Menu\ArrayMenuReader;
 use CarltonHonda\Menu\MenuReader;
 use CarltonHonda\Page\FilePageReader;
 use CarltonHonda\Page\PageReader;
+use CarltonHonda\Service\UserAuthentication;
 use CarltonHonda\Service\UserRegistration;
 use CarltonHonda\Template\FrontendRenderer;
 use CarltonHonda\Template\FrontendTwigRenderer;
@@ -45,6 +46,7 @@ $injector->define(Mustache_Engine::class, [
 $injector->delegate(Environment::class, function () use ($injector) {
   $loader = new Twig_Loader_Filesystem(dirname(__DIR__) . '/templates');
   $twig = new Environment($loader);
+  $twig->addGlobal('session', $_SESSION);
   return $twig;
 });
 
@@ -67,6 +69,8 @@ $injector->define(PDO::class, [
   ':passwd' => $db_pass,
 ]);
 
+// Services.
 $injector->share(UserRegistration::class);
+$injector->share(UserAuthentication::class);
 
 return $injector;

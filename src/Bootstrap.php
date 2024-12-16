@@ -37,6 +37,8 @@ $injector = require __DIR__ . '/Dependencies.php';
 $request = $injector->make(Request::class);
 $response = $injector->make(Response::class);
 
+session_start();
+
 // Load routes.
 $routesConfig = require __DIR__ . '/Routes.php';
 $routes = new RouteCollection();
