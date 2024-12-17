@@ -1,3 +1,5 @@
-{% extends "Layout.html" %} {% block content %}
-<h1>Hello World</h1>
-Hello {{ name }} {% endblock %}
+{% extends "Layout.html" %} {% block title %} · Home {% endblock %} {% block content %} {% if session.email %}
+<h1>Welcome, {{ session.email }}!</h1>
+{% else %}
+<h1>Welcome!</h1>
+{% endif %} {% endblock %}

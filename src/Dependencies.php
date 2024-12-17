@@ -7,6 +7,8 @@ use CarltonHonda\Menu\ArrayMenuReader;
 use CarltonHonda\Menu\MenuReader;
 use CarltonHonda\Page\FilePageReader;
 use CarltonHonda\Page\PageReader;
+use CarltonHonda\Service\UserAuthentication;
+use CarltonHonda\Service\UserRegistration;
 use CarltonHonda\Template\FrontendRenderer;
 use CarltonHonda\Template\FrontendTwigRenderer;
 use CarltonHonda\Template\MustacheRenderer;
@@ -15,6 +17,8 @@ use CarltonHonda\Template\TwigRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+
+include __DIR__ . '../../database_config.php';
 
 $injector = new Injector();
 
@@ -42,6 +46,7 @@ $injector->define(Mustache_Engine::class, [
 $injector->delegate(Environment::class, function () use ($injector) {
   $loader = new Twig_Loader_Filesystem(dirname(__DIR__) . '/templates');
   $twig = new Environment($loader);
+  $twig->addGlobal('session', $_SESSION);
   return $twig;
 });
 
@@ -56,5 +61,16 @@ $injector->alias(FrontendRenderer::class, FrontendTwigRenderer::class);
 
 $injector->alias(MenuReader::class, ArrayMenuReader::class);
 $injector->share(ArrayMenuReader::class);
+
+$injector->share(PDO::class);
+$injector->define(PDO::class, [
+  ':dsn' => "mysql:host=$db_host;dbname=$db_name",
+  ':username' => $db_user,
+  ':passwd' => $db_pass,
+]);
+
+// Services.
+$injector->share(UserRegistration::class);
+$injector->share(UserAuthentication::class);
 
 return $injector;
