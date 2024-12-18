@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use CarltonHonda\Controller\Contact;
 use CarltonHonda\Controller\Homepage;
 use CarltonHonda\Controller\Login;
 use CarltonHonda\Controller\Logout;
@@ -25,6 +26,10 @@ return [
     'logout' => [
       'path' => '/logout',
       '_controller' => [Logout::class, 'show']
+    ],
+    'contact' => [
+      'path' => '/contact',
+      '_controller' => [Contact::class, 'show']
     ],
     'slug' => [
       'path' => '/{slug}',
