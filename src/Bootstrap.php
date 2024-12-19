@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CarltonHonda;
 
+use Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
@@ -19,11 +20,13 @@ require __DIR__ . '/../vendor/autoload.php';
 
 error_reporting(E_ALL);
 
-$environment = 'development';
+// Load environment variables.
+$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
 
 // Error handler.
 $whoops = new Run;
-if ($environment !== 'production') {
+if ($_ENV['ENVIRONMENT'] !== 'production') {
   $whoops->pushHandler(new PrettyPageHandler);
 } else {
   $whoops->pushHandler(function ($e) {

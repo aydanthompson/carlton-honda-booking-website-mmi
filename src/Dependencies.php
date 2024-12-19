@@ -18,8 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-include __DIR__ . '../../database_config.php';
-
 $injector = new Injector();
 
 $injector->alias(Request::class, Request::class);
@@ -64,9 +62,9 @@ $injector->share(ArrayMenuReader::class);
 
 $injector->share(PDO::class);
 $injector->define(PDO::class, [
-  ':dsn' => "mysql:host=$db_host;dbname=$db_name",
-  ':username' => $db_user,
-  ':passwd' => $db_pass,
+  ':dsn' => 'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'],
+  ':username' => $_ENV['DB_USER'],
+  ':passwd' => $_ENV['DB_PASS'],
 ]);
 
 // Services.
