@@ -64,7 +64,11 @@ try {
   $method = $controller[1];
   $controllerInstance = [$class, $method];
 
-  call_user_func($controllerInstance, $attributes);
+  $result = call_user_func($controllerInstance, $attributes);
+  // Controller methods that return response objects override the default response.
+  if ($result instanceof Response) {
+    $response = $result;
+  }
 } catch (ResourceNotFoundException $e) {
   $response->setContent('404 - Page not found');
   $response->setStatusCode(404);
