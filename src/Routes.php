@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use CarltonHonda\Controller\BookingController;
 use CarltonHonda\Controller\Contact;
 use CarltonHonda\Controller\Homepage;
 use CarltonHonda\Controller\Login;
@@ -30,6 +31,14 @@ return [
     'contact' => [
       'path' => '/contact',
       '_controller' => [Contact::class, 'show']
+    ],
+    'online_booking' => [
+      'path' => '/online-booking',
+      '_controller' => [BookingController::class, 'show']
+    ],
+    'online_booking_get_available_slots' => [
+      'path' => '/online-booking/get-available-slots',
+      '_controller' => [BookingController::class, 'getAvailableSlots']
     ],
     'slug' => [
       'path' => '/{slug}',

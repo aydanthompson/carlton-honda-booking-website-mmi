@@ -1,0 +1,12 @@
+{% extends "Layout.html" %} {% block title %}Online Booking{% endblock %} {% block content %}
+<h1>Online Booking</h1>
+{% if session.email %}
+<div class="container-date-picker">
+  <input type="text" id="date-picker" placeholder="Select a date" />
+  <div id="available-times"></div>
+</div>
+{% else %}
+<p>Please log in to book a service.</p>
+{% endif %} {% endblock %} {% block footer %} {% if session.email %}
+<script src="js/booking.js"></script>
+{% endif %} {% endblock %}

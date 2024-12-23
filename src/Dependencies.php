@@ -7,6 +7,7 @@ use CarltonHonda\Menu\ArrayMenuReader;
 use CarltonHonda\Menu\MenuReader;
 use CarltonHonda\Page\FilePageReader;
 use CarltonHonda\Page\PageReader;
+use CarltonHonda\Service\BookingService;
 use CarltonHonda\Service\UserAuthentication;
 use CarltonHonda\Service\UserRegistration;
 use CarltonHonda\Template\FrontendRenderer;
@@ -70,5 +71,6 @@ $injector->define(PDO::class, [
 // Services.
 $injector->share(UserRegistration::class);
 $injector->share(UserAuthentication::class);
+$injector->share(BookingService::class);
 
 return $injector;
