@@ -59,16 +59,10 @@ try {
   $controller = $attributes['_controller'];
   unset($attributes['_controller']);
 
-  if (is_array($controller)) {
-    // Controller is a class name and method.
-    $className = $controller[0];
-    $class = $injector->make($className);
-    $method = $controller[1];
-    $controllerInstance = [$class, $method];
-  } else {
-    // Controller is a callable.
-    $controllerInstance = $controller;
-  }
+  $className = $controller[0];
+  $class = $injector->make($className);
+  $method = $controller[1];
+  $controllerInstance = [$class, $method];
 
   call_user_func($controllerInstance, $attributes);
 } catch (ResourceNotFoundException $e) {
