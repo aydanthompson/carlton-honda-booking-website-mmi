@@ -1,12 +1,20 @@
 {% extends "Layout.html" %} {% block title %} · Online Booking{% endblock %} {% block content %}
-<h1>Online Booking</h1>
-{% if session.email %}
-<div class="container-date-picker">
-  <input type="text" id="date-picker" placeholder="Select a date" />
-  <div id="available-times"></div>
+<div class="container">
+  <h1>Online Booking</h1>
+  {% if session.email %}
+  <h3>Book a slot today</h3>
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <div id="calendar"></div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <div id="available-times"></div>
+    </div>
+  </div>
+  {% else %}
+  <h3>Please log in to book a service.</h3>
+  {% endif %}
 </div>
-{% else %}
-<p>Please log in to book a service.</p>
-{% endif %} {% endblock %} {% block footer %} {% if session.email %}
+{% endblock %} {% block footer %} {% if session.email %}
 <script src="js/booking.js"></script>
 {% endif %} {% endblock %}
