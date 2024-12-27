@@ -29,7 +29,7 @@ function changeMonth(offset) {
     currentMonth = 0;
     currentYear++;
   }
-  createCalendar(currentMonth, currentYear);
+  fetchDaysWithFreeSlots();
 }
 
 function displayAvailableSlots(slots) {
@@ -54,6 +54,14 @@ function fetchAvailableSlots(date) {
     });
 }
 
+function fetchDaysWithFreeSlots() {
+  fetch("/online-booking/get-days-with-free-slots")
+    .then((response) => response.json())
+    .then((daysWithFreeSlots) => {
+      createCalendar(currentMonth, currentYear, daysWithFreeSlots);
+    });
+}
+
 function handleDayClick(event) {
   const date = event.currentTarget.dataset.date;
   if (selectedDate) {
@@ -75,7 +83,7 @@ function updateCalendarWithSlots(date, slots) {
   });
 }
 
-function createCalendar(month, year) {
+function createCalendar(month, year, daysWithFreeSlots = []) {
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
 
@@ -99,7 +107,10 @@ function createCalendar(month, year) {
 
   for (let day = 1; day <= lastDay.getDate(); day++) {
     const date = new Date(year, month, day);
-    calendarHTML += `<td class="calendar-day text-center" data-date="${date.toISOString().split("T")[0]}">${day}</td>`;
+    const dateString = date.toISOString().split("T")[0];
+    const isAvailable = daysWithFreeSlots.includes(dateString);
+    const className = isAvailable ? "calendar-day text-center" : "calendar-day text-center greyed-out";
+    calendarHTML += `<td class="${className}" data-date="${dateString}">${day}</td>`;
     if (date.getDay() === 6) {
       calendarHTML += "</tr><tr>";
     }
@@ -109,12 +120,14 @@ function createCalendar(month, year) {
   calendarEl.innerHTML = calendarHTML;
 
   document.querySelectorAll(".calendar-day").forEach((day) => {
-    day.addEventListener("click", handleDayClick);
+    if (!day.classList.contains("greyed-out")) {
+      day.addEventListener("click", handleDayClick);
+    }
   });
 }
 
 function initializeCalendar() {
-  createCalendar(currentMonth, currentYear);
+  fetchDaysWithFreeSlots();
 }
 
 document.addEventListener("DOMContentLoaded", initializeCalendar);

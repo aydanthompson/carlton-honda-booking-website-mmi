@@ -46,3 +46,9 @@ class BookingController
     $response = new JsonResponse($availableSlots);
     return $response;
   }
+
+  public function getDaysWithFreeSlots(): JsonResponse
+  {
+    $daysWithFreeSlots = $this->bookingService->getDaysWithFreeSlots();
+    return new JsonResponse($daysWithFreeSlots);
+  }

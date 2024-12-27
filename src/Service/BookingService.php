@@ -26,3 +26,9 @@ class BookingService
       return ['time' => $slot['time']];
     }, $slots);
   }
+
+  public function getDaysWithFreeSlots(): array
+  {
+    $stmt = $this->pdo->query('SELECT DISTINCT date FROM available_slots WHERE is_booked = 0');
+    return $stmt->fetchAll(PDO::FETCH_COLUMN);
+  }

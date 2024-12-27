@@ -65,3 +65,9 @@
   background-color: vars.$primary-color;
   color: #fff;
 }
+
+.calendar-day.greyed-out {
+  background-color: #f0f0f0;
+  color: #ccc;
+  cursor: not-allowed;
+}

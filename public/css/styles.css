@@ -71,3 +71,9 @@
   background-color: #cc0000;
   color: #fff;
 }
+
+.calendar-day.greyed-out {
+  background-color: #f0f0f0;
+  color: #ccc;
+  cursor: not-allowed;
+}
