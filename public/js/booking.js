@@ -32,12 +32,45 @@ function changeMonth(offset) {
   fetchDaysWithFreeSlots();
 }
 
+function bookSlot(time) {
+  const date = selectedDate.dataset.date;
+  document.getElementById("selectedTime").textContent = `Booking for ${date} at ${time}`;
+  const bookingModal = document.getElementById("bookingModal");
+  bookingModal.style.display = "block";
+
+  document.getElementById("payNowButton").onclick = function () {
+    document.getElementById("spinner").style.display = "block";
+    setTimeout(() => {
+      document.getElementById("spinner").style.display = "none";
+      document.getElementById("successMessage").style.display = "block";
+      fetch("/online-booking/book-slot", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ date, time }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            alert("Slot booked successfully!");
+            fetchAvailableSlots(date);
+          } else {
+            alert("Failed to book slot. Please try again.");
+          }
+        });
+    }, 2000);
+  };
+}
+
 function displayAvailableSlots(slots) {
   availableTimesEl.innerHTML = "";
   if (slots.length > 0) {
     slots.forEach((slot) => {
-      const slotElement = document.createElement("div");
+      const slotElement = document.createElement("button");
       slotElement.textContent = slot.time;
+      slotElement.classList.add("btn", "btn-primary", "mb-2");
+      slotElement.addEventListener("click", () => bookSlot(slot.time));
       availableTimesEl.appendChild(slotElement);
     });
   } else {

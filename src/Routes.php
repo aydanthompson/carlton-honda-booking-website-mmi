@@ -44,6 +44,10 @@ return [
       'path' => '/online-booking/get-days-with-free-slots',
       '_controller' => [BookingController::class, 'getDaysWithFreeSlots']
     ],
+    'online_booking_book_slot' => [
+      'path' => '/online-booking/book-slot',
+      '_controller' => [BookingController::class, 'bookSlot']
+    ],
     'slug' => [
       'path' => '/{slug}',
       '_controller' => [Page::class, 'show']
