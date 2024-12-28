@@ -19,7 +19,7 @@ class EmailService
   public function sendEmail(string $to, string $subject, string $body, string $from = null, string $replyTo = null): bool
   {
     try {
-      // Server settings
+      // Server settings.
       $this->mailer->isSMTP();
       $this->mailer->Host = $_ENV['SMTP_HOST'];
       $this->mailer->SMTPAuth = true;
@@ -28,14 +28,14 @@ class EmailService
       $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
       $this->mailer->Port = 587;
 
-      // Recipients
+      // Recipients.
       $this->mailer->setFrom($from ?? $_ENV['SMTP_USER'], 'Carlton Honda Support');
       $this->mailer->addAddress($to);
       if ($replyTo) {
         $this->mailer->addReplyTo($replyTo);
       }
 
-      // Content
+      // Content.
       $this->mailer->isHTML(true);
       $this->mailer->Subject = $subject;
       $this->mailer->Body = nl2br($body);
