@@ -8,8 +8,8 @@ use CarltonHonda\Menu\MenuReader;
 use CarltonHonda\Page\FilePageReader;
 use CarltonHonda\Page\PageReader;
 use CarltonHonda\Service\BookingService;
-use CarltonHonda\Service\UserAuthentication;
-use CarltonHonda\Service\UserRegistration;
+use CarltonHonda\Service\UserAuthenticationService;
+use CarltonHonda\Service\UserRegistrationService;
 use CarltonHonda\Template\FrontendRenderer;
 use CarltonHonda\Template\FrontendTwigRenderer;
 use CarltonHonda\Template\MustacheRenderer;
@@ -69,8 +69,8 @@ $injector->define(PDO::class, [
 ]);
 
 // Services.
-$injector->share(UserRegistration::class);
-$injector->share(UserAuthentication::class);
+$injector->share(UserRegistrationService::class);
+$injector->share(UserAuthenticationService::class);
 $injector->share(BookingService::class);
 
 return $injector;

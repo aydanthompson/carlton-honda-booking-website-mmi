@@ -7,7 +7,7 @@ namespace CarltonHonda\Controller;
 use CarltonHonda\Template\FrontendRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use CarltonHonda\Service\UserAuthentication;
+use CarltonHonda\Service\UserAuthenticationService;
 
 class Login
 {
@@ -20,7 +20,7 @@ class Login
     Request $request,
     Response $response,
     FrontendRenderer $renderer,
-    UserAuthentication $authenticationService
+    UserAuthenticationService $authenticationService
   ) {
     $this->request = $request;
     $this->response = $response;

@@ -6,7 +6,7 @@ namespace CarltonHonda\Service;
 
 use PDO;
 
-class UserAuthentication
+class UserAuthenticationService
 {
   private $pdo;
 

@@ -7,7 +7,7 @@ namespace CarltonHonda\Controller;
 use CarltonHonda\Template\FrontendRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use CarltonHonda\Service\UserRegistration;
+use CarltonHonda\Service\UserRegistrationService;
 
 class Register
 {
@@ -20,7 +20,7 @@ class Register
     Request $request,
     Response $response,
     FrontendRenderer $renderer,
-    UserRegistration $registrationService
+    UserRegistrationService $registrationService
   ) {
     $this->request = $request;
     $this->response = $response;
