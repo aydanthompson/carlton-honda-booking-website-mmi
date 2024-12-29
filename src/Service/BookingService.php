@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CarltonHonda\Service;
 
-use Exception;
 use PDO;
 
 class BookingService
@@ -22,7 +21,6 @@ class BookingService
     $stmt->execute(['date' => $date]);
     $slots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Format the slots to include the time key
     return array_map(function ($slot) {
       return ['time' => $slot['time']];
     }, $slots);
@@ -50,26 +48,73 @@ class BookingService
     return $result !== false ? (int) $result : null;
   }
 
-  public function bookSlot(int $slotId, int $userId): bool
+  public function bookSlot(int $userId, string $date, string $time): bool
   {
     $this->pdo->beginTransaction();
-
     try {
-      $stmt = $this->pdo->prepare('UPDATE available_slots SET is_booked = 1 WHERE id = :slotId AND is_booked = 0');
-      $stmt->execute(['slotId' => $slotId]);
+      $stmt = $this->pdo->prepare('INSERT INTO bookings (user_id, service, date, time) VALUES (:userId, :service, :date, :time)');
+      $stmt->execute([
+        'userId' => $userId,
+        'service' => 'MOT',
+        'date' => $date,
+        'time' => $time
+      ]);
 
-      if ($stmt->rowCount() === 1) {
-        $stmt = $this->pdo->prepare('INSERT INTO bookings (user_id, slot_id) VALUES (:userId, :slotId)');
-        $stmt->execute(['userId' => $userId, 'slotId' => $slotId]);
-        $this->pdo->commit();
-        return true;
-      }
+      $stmt = $this->pdo->prepare('UPDATE available_slots SET is_booked = 1 WHERE date = :date AND time = :time');
+      $stmt->execute([
+        'date' => $date,
+        'time' => $time
+      ]);
 
+      $this->pdo->commit();
+      return true;
+    } catch (\Exception $e) {
+      error_log($e->getMessage());
       $this->pdo->rollBack();
       return false;
-    } catch (Exception $e) {
+    }
+  }
+
+  public function getBookingsByUserId(int $userId): array
+  {
+    $stmt = $this->pdo->prepare('SELECT * FROM bookings WHERE user_id = :userId');
+    $stmt->execute(['userId' => $userId]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function getAllBookings(): array
+  {
+    $stmt = $this->pdo->query('SELECT * FROM bookings');
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function cancelBooking(int $bookingId): bool
+  {
+    $this->pdo->beginTransaction();
+    try {
+      $stmt = $this->pdo->prepare('SELECT date, time FROM bookings WHERE id = :bookingId');
+      $stmt->execute(['bookingId' => $bookingId]);
+      $booking = $stmt->fetch();
+
+      if (!$booking) {
+        throw new \Exception('Booking not found');
+      }
+
+      $stmt = $this->pdo->prepare('DELETE FROM bookings WHERE id = :bookingId');
+      $stmt->execute(['bookingId' => $bookingId]);
+
+      $stmt = $this->pdo->prepare('UPDATE available_slots SET is_booked = 0 WHERE date = :date AND time = :time');
+      $stmt->execute([
+        'date' => $booking['date'],
+        'time' => $booking['time']
+      ]);
+
+      $this->pdo->commit();
+      return true;
+    } catch (\Exception $e) {
+      error_log($e->getMessage());
       $this->pdo->rollBack();
-      throw $e;
+      return false;
     }
   }
 }

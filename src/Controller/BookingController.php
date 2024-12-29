@@ -35,7 +35,8 @@ class BookingController
 
   public function show()
   {
-    if (isset($_SESSION['email'])) {
+    if (isset($_SESSION['user'])) {
+      // TODO: Implement service type selection.
       $data['services'] = ['MOT', 'Service', 'Repair'];
     }
 
@@ -62,20 +63,19 @@ class BookingController
     $date = $data['date'];
     $time = $data['time'];
 
-    $email = $_SESSION['email'];
-    $userId = $this->bookingService->getUserIdByEmail($email);
-    if ($userId === null) {
-      return new JsonResponse(['success' => false, 'message' => 'User not found']);
-    }
+    $user = unserialize($_SESSION['user']);
+    $userId = $user->getId();
 
-    $slotId = $this->bookingService->getSlotId($date, $time);
-    if ($slotId && $this->bookingService->bookSlot($slotId, $userId)) {
-      // Send confirmation email
-      $this->sendConfirmationEmail($email, $date, $time);
-      return new JsonResponse(['success' => true]);
+    try {
+      if ($this->bookingService->bookSlot($userId, $date, $time)) {
+        $this->sendConfirmationEmail($user->getEmail(), $date, $time);
+        return new JsonResponse(['success' => true]);
+      }
+      return new JsonResponse(['success' => false]);
+    } catch (\Exception $e) {
+      error_log($e->getMessage());
+      return new JsonResponse(['success' => false, 'error' => 'Internal Server Error'], 500);
     }
-
-    return new JsonResponse(['success' => false]);
   }
 
   private function sendConfirmationEmail(string $email, string $date, string $time): void

@@ -1,8 +1,8 @@
 {% extends "Layout.html" %} {% block title %} · Online Booking{% endblock %} {% block content %}
 <div class="container">
   <h1>Online Booking</h1>
-  {% if session.email %}
-  <h3>Book a slot today</h3>
+  {% if session.user %}
+  <h3>Book a slot today!</h3>
   <div class="row">
     <div class="col-md-6 col-sm-12">
       <div id="calendar"></div>
@@ -24,6 +24,6 @@
   <h3>Please log in to book a service.</h3>
   {% endif %}
 </div>
-{% endblock %} {% block footer %} {% if session.email %}
-<script src="js/booking.js"></script>
+{% endblock %} {% block footer %} {% if session.user %}
+<script src="/js/booking.js"></script>
 {% endif %} {% endblock %}

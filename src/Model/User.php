@@ -7,27 +7,28 @@ namespace CarltonHonda\Model;
 class User
 {
   private $id;
-  private $username;
-  private $passwordHash;
   private $email;
-  private $createdAt;
-  private $updatedAt;
+  private $roleName;
 
-  public function __construct(
-    int $id,
-    string $username,
-    string $passwordHash,
-    string $email,
-    string $createdAt,
-    string $updatedAt
-  ) {
+  public function __construct(int $id, string $email, string $roleName)
+  {
     $this->id = $id;
-    $this->username = $username;
-    $this->passwordHash = $passwordHash;
     $this->email = $email;
-    $this->createdAt = $createdAt;
-    $this->updatedAt = $updatedAt;
+    $this->roleName = $roleName;
   }
 
-  // Add getters for the properties
+  public function getId(): int
+  {
+    return $this->id;
+  }
+
+  public function getEmail(): string
+  {
+    return $this->email;
+  }
+
+  public function getRoleName(): string
+  {
+    return $this->roleName;
+  }
 }

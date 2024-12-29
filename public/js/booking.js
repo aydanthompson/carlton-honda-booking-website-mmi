@@ -40,26 +40,29 @@ function bookSlot(time) {
 
   document.getElementById("payNowButton").onclick = function () {
     document.getElementById("spinner").style.display = "block";
-    setTimeout(() => {
-      document.getElementById("spinner").style.display = "none";
-      document.getElementById("successMessage").style.display = "block";
-      fetch("/online-booking/book-slot", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ date, time }),
+    fetch("/online-booking/book-slot", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ date, time }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        document.getElementById("spinner").style.display = "none";
+        if (data.success) {
+          document.getElementById("successMessage").style.display = "block";
+          alert("Slot booked successfully!");
+          fetchAvailableSlots(date);
+        } else {
+          alert("Failed to book slot. Please try again.");
+        }
       })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            alert("Slot booked successfully!");
-            fetchAvailableSlots(date);
-          } else {
-            alert("Failed to book slot. Please try again.");
-          }
-        });
-    }, 2000);
+      .catch((error) => {
+        document.getElementById("spinner").style.display = "none";
+        alert("An error occurred. Please try again.");
+        console.error("Error booking slot:", error);
+      });
   };
 }
 

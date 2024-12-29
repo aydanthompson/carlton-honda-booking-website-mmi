@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CarltonHonda\Service;
 
 use PDO;
+use CarltonHonda\Model\User;
 
 class UserAuthenticationService
 {
@@ -15,16 +16,24 @@ class UserAuthenticationService
     $this->pdo = $pdo;
   }
 
-  public function authenticate(string $email, string $password): bool
+  public function authenticate(string $email, string $password): ?User
   {
-    $stmt = $this->pdo->prepare('SELECT password_hash FROM users WHERE email = :email');
+    $stmt = $this->pdo->prepare('
+      SELECT users.*, user_roles.role_name 
+      FROM users 
+      JOIN user_roles ON users.role_id = user_roles.id 
+      WHERE email = :email
+    ');
     $stmt->execute(['email' => $email]);
-    $passwordHash = $stmt->fetchColumn();
+    $row = $stmt->fetch();
 
-    if ($passwordHash && password_verify($password, $passwordHash)) {
-      return true;
+    if ($row && password_verify($password, $row['password_hash'])) {
+      return new User(
+        (int)$row['id'],
+        $row['email'],
+        $row['role_name']
+      );
     }
-
-    return false;
+    return null;
   }
 }
