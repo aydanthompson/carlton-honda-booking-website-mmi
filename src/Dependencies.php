@@ -18,6 +18,7 @@ use CarltonHonda\Template\TwigRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 $injector = new Injector();
 
@@ -43,7 +44,7 @@ $injector->define(Mustache_Engine::class, [
   ],
 ]);
 $injector->delegate(Environment::class, function () use ($injector) {
-  $loader = new Twig_Loader_Filesystem(dirname(__DIR__) . '/templates');
+  $loader = new FilesystemLoader(dirname(__DIR__) . '/templates');
   $twig = new Environment($loader);
   $twig->addGlobal('session', $_SESSION);
   return $twig;
@@ -62,11 +63,20 @@ $injector->alias(MenuReader::class, ArrayMenuReader::class);
 $injector->share(ArrayMenuReader::class);
 
 $injector->share(PDO::class);
-$injector->define(PDO::class, [
-  ':dsn' => 'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'],
-  ':username' => $_ENV['DB_USER'],
-  ':passwd' => $_ENV['DB_PASS'],
-]);
+$injector->delegate(PDO::class, function () {
+  $host = $_ENV['DB_HOST'];
+  $db = $_ENV['DB_NAME'];
+  $user = $_ENV['DB_USER'];
+  $pass = $_ENV['DB_PASS'];
+  $charset = 'utf8mb4';
+  $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+  $options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES => false,
+  ];
+  return new PDO($dsn, $user, $pass, $options);
+});
 
 // Services.
 $injector->share(UserRegistrationService::class);
