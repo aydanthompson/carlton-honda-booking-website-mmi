@@ -125,9 +125,9 @@ function createCalendar(month, year, daysWithFreeSlots = []) {
 
   let calendarHTML = `
     <div class="calendar-header d-flex justify-content-between align-items-center">
-      <span class="prev-button" onclick="changeMonth(-1)">&lt;</span>
+      <span class="prev-button" onclick="changeMonth(-1)"><i class="fa-solid fa-caret-left"></i></span>
       <span class="month-name">${MONTH_NAMES[month]} ${year}</span>
-      <span class="next-button" onclick="changeMonth(1)">&gt;</span>
+      <span class="next-button" onclick="changeMonth(1)"><i class="fa-solid fa-caret-right"></i></span>
     </div>
     <table class="table table-bordered">
       <thead>
