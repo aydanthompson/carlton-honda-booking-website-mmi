@@ -51,9 +51,9 @@
 
 #calendar th,
 #calendar td {
-  width: 14.2857142857%; /* Make each date square */
-  height: 100%; /* Adjust height to make it smaller */
-  padding: 2px; /* Smaller padding for smaller squares */
+  width: 14.2857142857%;
+  height: 100%;
+  padding: 2px;
   text-align: center;
   border: none;
 }

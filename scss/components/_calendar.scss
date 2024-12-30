@@ -44,14 +44,13 @@
 
 #calendar th,
 #calendar td {
-  width: calc(100% / 7); /* Make each date square */
-  height: 100%; /* Adjust height to make it smaller */
-  padding: 2px; /* Smaller padding for smaller squares */
+  width: calc(100% / 7);
+  height: 100%;
+  padding: 2px;
   text-align: center;
   border: none;
 }
 
-// Days of the week row.
 #calendar th {
   font-size: 0.6em;
 }
