@@ -34,11 +34,11 @@ function changeMonth(offset) {
 
 function bookSlot(time) {
   const date = selectedDate.dataset.date;
-  document.getElementById("selectedTime").textContent = `Booking for ${date} at ${time}`;
-  const bookingModal = document.getElementById("bookingModal");
+  document.getElementById("selected-time").textContent = `Booking for ${date} at ${time}`;
+  const bookingModal = document.getElementById("booking-modal");
   bookingModal.style.display = "block";
 
-  document.getElementById("payNowButton").onclick = function () {
+  document.getElementById("pay-now-button").onclick = function () {
     document.getElementById("spinner").style.display = "block";
     fetch("/online-booking/book-slot", {
       method: "POST",
@@ -51,7 +51,7 @@ function bookSlot(time) {
       .then((data) => {
         document.getElementById("spinner").style.display = "none";
         if (data.success) {
-          document.getElementById("successMessage").style.display = "block";
+          document.getElementById("success-message").style.display = "block";
           alert("Slot booked successfully!");
           fetchAvailableSlots(date);
         } else {
