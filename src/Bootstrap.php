@@ -59,18 +59,16 @@ try {
   $controller = $attributes['_controller'];
   unset($attributes['_controller']);
 
-  if (is_array($controller)) {
-    // Controller is a class name and method.
-    $className = $controller[0];
-    $class = $injector->make($className);
-    $method = $controller[1];
-    $controllerInstance = [$class, $method];
-  } else {
-    // Controller is a callable.
-    $controllerInstance = $controller;
-  }
+  $className = $controller[0];
+  $class = $injector->make($className);
+  $method = $controller[1];
+  $controllerInstance = [$class, $method];
 
-  call_user_func($controllerInstance, $attributes);
+  $result = call_user_func($controllerInstance, $attributes);
+  // Controller methods that return response objects override the default response.
+  if ($result instanceof Response) {
+    $response = $result;
+  }
 } catch (ResourceNotFoundException $e) {
   $response->setContent('404 - Page not found');
   $response->setStatusCode(404);

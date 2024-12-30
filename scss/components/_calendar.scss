@@ -1,18 +1,11 @@
-* {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-optical-sizing: auto;
-}
+@use "../abstracts/variables" as vars;
+@use "../base/typography" as fonts;
 
 .calendar-header {
   padding: 10px;
-  color: #fff;
-  background-color: #cc0000;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 900;
-  font-style: normal;
-  font-optical-sizing: auto;
+  color: vars.$secondary-color;
+  background-color: vars.$primary-color;
+  @include fonts.montserrat(900);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -27,8 +20,10 @@
 .calendar-header .next-button {
   cursor: pointer;
   font-size: 1.2em;
-  color: #fff;
-  transition: background-color 0.3s, color 0.3s;
+  color: vars.$secondary-color;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,13 +34,13 @@
 
 .calendar-header .prev-button:hover,
 .calendar-header .next-button:hover {
-  background-color: #fff;
-  color: #cc0000;
+  background-color: vars.$secondary-color;
+  color: vars.$primary-color;
 }
 
 #calendar th,
 #calendar td {
-  width: 14.2857142857%;
+  width: calc(100% / 7);
   height: 100%;
   padding: 2px;
   text-align: center;
@@ -62,7 +57,7 @@
 }
 
 .calendar-day.selected {
-  background-color: #cc0000;
+  background-color: vars.$primary-color;
   color: #fff;
 }
 

@@ -4,50 +4,49 @@ declare(strict_types=1);
 
 namespace CarltonHonda\Controller;
 
+use CarltonHonda\Service\UserAuthenticationService;
 use CarltonHonda\Template\FrontendRenderer;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use CarltonHonda\Service\UserAuthentication;
 
 class Login
 {
   private $request;
   private $response;
   private $renderer;
-  private $authenticationService;
+  private $userAuthenticationService;
 
   public function __construct(
     Request $request,
     Response $response,
     FrontendRenderer $renderer,
-    UserAuthentication $authenticationService
+    UserAuthenticationService $userAuthenticationService
   ) {
     $this->request = $request;
     $this->response = $response;
     $this->renderer = $renderer;
-    $this->authenticationService = $authenticationService;
+    $this->userAuthenticationService = $userAuthenticationService;
   }
 
-  public function show()
+  public function show(): Response
   {
     if ($this->request->isMethod('POST')) {
       $email = $this->request->get('email');
       $password = $this->request->get('password');
 
-      if ($this->authenticationService->authenticate($email, $password)) {
-        $_SESSION['email'] = $email;
-        $this->response->headers->set('Location', '/');
-        $this->response->setStatusCode(302);
-        return;
+      $user = $this->userAuthenticationService->authenticate($email, $password);
+      if ($user) {
+        $_SESSION['user'] = serialize($user);
+        return new JsonResponse(['success' => true]);
       } else {
-        $_SESSION['flash'] = 'Invalid credentials. Please try again.';
-        $this->response->headers->set('Location', '/');
-        $this->response->setStatusCode(302);
-        return;
+        // Message is displayed above the login form.
+        return new JsonResponse(['success' => false, 'message' => 'Invalid credentials. Please try again.']);
       }
     }
 
     $html = $this->renderer->render('Homepage', []);
     $this->response->setContent($html);
+    return $this->response;
   }
 }

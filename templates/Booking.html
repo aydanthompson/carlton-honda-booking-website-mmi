@@ -1,0 +1,29 @@
+{% extends "Layout.html" %} {% block title %} · Online Booking{% endblock %} {% block content %}
+<div class="container">
+  <h1>Online Booking</h1>
+  {% if session.user %}
+  <h3>Book a slot today!</h3>
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <div id="calendar"></div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <div id="available-times"></div>
+    </div>
+  </div>
+  <div id="booking-modal" class="modal">
+    <div class="modal-content">
+      <h4>Confirm Booking</h4>
+      <p id="selected-time"></p>
+      <button id="pay-now-button" class="btn btn-primary">Pay Now</button>
+      <div id="spinner" class="spinner" style="display: none">Processing...</div>
+      <div id="success-message" style="display: none">Success!</div>
+    </div>
+  </div>
+  {% else %}
+  <h3>Please log in to book a service.</h3>
+  {% endif %}
+</div>
+{% endblock %} {% block footer %} {% if session.user %}
+<script src="/js/booking.js"></script>
+{% endif %} {% endblock %}

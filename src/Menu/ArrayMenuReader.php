@@ -10,7 +10,7 @@ class ArrayMenuReader implements MenuReader
   {
     return [
       ['href' => '/', 'text' => 'Home'],
-      ['href' => '/book', 'text' => 'Online Booking'],
+      ['href' => '/online-booking', 'text' => 'Online Booking'],
       ['href' => '/contact', 'text' => 'Contact Us'],
     ];
   }

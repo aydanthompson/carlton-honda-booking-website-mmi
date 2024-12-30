@@ -7,6 +7,7 @@ namespace CarltonHonda\Controller;
 use CarltonHonda\Template\FrontendRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use CarltonHonda\Model\User;
 
 class Homepage
 {
@@ -26,8 +27,15 @@ class Homepage
 
   public function show()
   {
-    $data = ['name' => $this->request->get('name', 'stranger')];
-    $html = $this->renderer->render('Homepage', $data);
+    // Makes user data available to the view.
+    if (isset($_SESSION['user'])) {
+      $user = unserialize($_SESSION['user']);
+      if ($user instanceof User) {
+        $data['user'] = $user;
+      }
+    }
+
+    $html = $this->renderer->render('Homepage', $data ?? []);
     $this->response->setContent($html);
   }
 }

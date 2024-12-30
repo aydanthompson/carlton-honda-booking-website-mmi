@@ -1,0 +1,10 @@
+@mixin montserrat($weight: 400) {
+  font-family: "Montserrat", sans-serif;
+  font-weight: $weight;
+  font-style: normal;
+  font-optical-sizing: auto;
+}
+
+* {
+  @include montserrat(400);
+}

@@ -20,6 +20,7 @@ class Logout
 
   public function show()
   {
+    unset($_SESSION['user']);
     session_destroy();
     $this->response->headers->set('Location', '/');
     $this->response->setStatusCode(302);
