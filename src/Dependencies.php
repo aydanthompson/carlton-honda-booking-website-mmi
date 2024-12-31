@@ -38,20 +38,20 @@ $injector->share(Response::class);
 $injector->alias(Renderer::class, TwigRenderer::class);
 $injector->define(Mustache_Engine::class, [
   ':options' => [
-    'loader' => new Mustache_Loader_FilesystemLoader(dirname(__DIR__) . '/templates', [
+    'loader' => new Mustache_Loader_FilesystemLoader($_ENV['PRIVATE_DIR'] . '/templates', [
       'extension' => '.html',
     ]),
   ],
 ]);
 $injector->delegate(Environment::class, function () use ($injector) {
-  $loader = new FilesystemLoader(dirname(__DIR__) . '/templates');
+  $loader = new FilesystemLoader($_ENV['PRIVATE_DIR'] . '/templates');
   $twig = new Environment($loader);
   $twig->addGlobal('session', $_SESSION);
   return $twig;
 });
 
 $injector->define(FilePageReader::class, [
-  ':pageFolder' => __DIR__ . '/../pages',
+  ':pageFolder' => $_ENV['PRIVATE_DIR'] . '/pages',
 ]);
 
 $injector->alias(PageReader::class, FilePageReader::class);

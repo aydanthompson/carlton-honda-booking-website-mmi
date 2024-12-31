@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CarltonHonda;
 
-use Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
@@ -16,13 +15,7 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
 
-require __DIR__ . '/../vendor/autoload.php';
-
 error_reporting(E_ALL);
-
-// Load environment variables.
-$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
-$dotenv->load();
 
 // Error handler.
 $whoops = new Run;
@@ -35,7 +28,7 @@ if ($_ENV['ENVIRONMENT'] !== 'production') {
 }
 $whoops->register();
 
-$injector = require __DIR__ . '/Dependencies.php';
+$injector = require $_ENV['PRIVATE_DIR'] . '/src/Dependencies.php';
 
 $request = $injector->make(Request::class);
 $response = $injector->make(Response::class);
@@ -43,7 +36,7 @@ $response = $injector->make(Response::class);
 session_start();
 
 // Load routes.
-$routesConfig = require __DIR__ . '/Routes.php';
+$routesConfig = require $_ENV['PRIVATE_DIR'] . '/src/Routes.php';
 $routes = new RouteCollection();
 foreach ($routesConfig['routes'] as $name => $route) {
   $routes->add($name, new Route($route['path'], ['_controller' => $route['_controller']]));
