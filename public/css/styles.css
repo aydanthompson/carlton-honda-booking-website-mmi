@@ -93,6 +93,46 @@
   width: 80%;
 }
 
+.modal-content .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-content .close-button i {
+  font-size: 24px;
+}
+
+.modal.fade-out {
+  animation: fadeOut 1s;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 .spinner {
   margin-top: 10px;
+}
+
+.timeslot-button {
+  cursor: pointer;
+  background-color: #cc0000;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  margin: 2px;
+  transition: background-color 0.3s, color 0.3s;
+  text-align: center;
+}
+
+.timeslot-button:hover {
+  background-color: rgb(183.6, 0, 0);
+  color: #fff;
 }

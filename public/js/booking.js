@@ -20,6 +20,11 @@ const MONTH_NAMES = [
   "December",
 ];
 
+function formatTime(time) {
+  const [hour, minute] = time.split(":");
+  return `${hour.padStart(2, "0")}:${minute.padStart(2, "0")}`;
+}
+
 function changeMonth(offset) {
   currentMonth += offset;
   if (currentMonth < 0) {
@@ -32,47 +37,66 @@ function changeMonth(offset) {
   fetchDaysWithFreeSlots();
 }
 
+function showModal() {
+  const bookingModal = document.getElementById("booking-modal");
+  bookingModal.classList.remove("fade-out");
+  bookingModal.style.display = "block";
+}
+
+function hideModal() {
+  const bookingModal = document.getElementById("booking-modal");
+  bookingModal.classList.add("fade-out");
+  // This delay must be shorter than the CSS transition else the modal can flash.
+  setTimeout(() => {
+    bookingModal.style.display = "none";
+  }, 900);
+}
+
 function bookSlot(time) {
   const date = selectedDate.dataset.date;
   document.getElementById("selected-time").textContent = `Booking for ${date} at ${time}`;
-  const bookingModal = document.getElementById("booking-modal");
-  bookingModal.style.display = "block";
+  showModal();
+  document.getElementById("pay-now-button").onclick = () => handlePayment(date, time);
+}
 
-  document.getElementById("pay-now-button").onclick = function () {
-    document.getElementById("spinner").style.display = "block";
-    fetch("/online-booking/book-slot", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ date, time }),
+function handlePayment(date, time) {
+  document.getElementById("spinner").style.display = "block";
+  fetch("/online-booking/book-slot", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ date, time }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      document.getElementById("spinner").style.display = "none";
+      if (data.success) {
+        document.getElementById("success-message").style.display = "block";
+        alert("Slot booked successfully!");
+        fetchAvailableSlots(date);
+        setTimeout(() => {
+          hideModal();
+        }, 2000);
+      } else {
+        alert("Failed to book slot. Please try again.");
+      }
     })
-      .then((response) => response.json())
-      .then((data) => {
-        document.getElementById("spinner").style.display = "none";
-        if (data.success) {
-          document.getElementById("success-message").style.display = "block";
-          alert("Slot booked successfully!");
-          fetchAvailableSlots(date);
-        } else {
-          alert("Failed to book slot. Please try again.");
-        }
-      })
-      .catch((error) => {
-        document.getElementById("spinner").style.display = "none";
-        alert("An error occurred. Please try again.");
-        console.error("Error booking slot:", error);
-      });
-  };
+    .catch((error) => {
+      document.getElementById("spinner").style.display = "none";
+      alert("An error occurred. Please try again.");
+      console.error("Error booking slot:", error);
+    });
 }
 
 function displayAvailableSlots(slots) {
   availableTimesEl.innerHTML = "";
+  availableTimesEl.classList.add("row", "g-3");
   if (slots.length > 0) {
     slots.forEach((slot) => {
       const slotElement = document.createElement("button");
-      slotElement.textContent = slot.time;
-      slotElement.classList.add("btn", "btn-primary", "mb-2");
+      slotElement.textContent = formatTime(slot.time);
+      slotElement.classList.add("btn", "btn-primary", "col-12", "col-md-6", "col-lg-4", "timeslot-button");
       slotElement.addEventListener("click", () => bookSlot(slot.time));
       availableTimesEl.appendChild(slotElement);
     });
@@ -165,5 +189,14 @@ function createCalendar(month, year, daysWithFreeSlots = []) {
 function initializeCalendar() {
   fetchDaysWithFreeSlots();
 }
+
+document.querySelector(".close-button").onclick = hideModal;
+
+window.onclick = function (event) {
+  const bookingModal = document.getElementById("booking-modal");
+  if (event.target == bookingModal) {
+    hideModal();
+  }
+};
 
 document.addEventListener("DOMContentLoaded", initializeCalendar);
