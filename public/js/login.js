@@ -1,28 +1,34 @@
 function initLoginForm() {
-  $("#login-form").on("submit", function (event) {
+  const loginForm = document.getElementById("login-form");
+  loginForm.addEventListener("submit", function (event) {
     // Prevent the default form submission behavior.
     event.preventDefault();
-    // Keeps to drop-down open.
+    // Keeps the drop-down open.
     event.stopPropagation();
 
-    $.ajax({
-      type: "POST",
-      url: "/login",
-      data: $(this).serialize(),
+    const formData = new FormData(loginForm);
+    const data = new URLSearchParams(formData);
 
-      success: function (response) {
+    fetch("/login", {
+      method: "POST",
+      body: data,
+    })
+      .then((response) => response.json())
+      .then((response) => {
         if (response.success) {
           location.reload();
         } else {
-          $("#login-error-message").text(response.message).show();
+          const errorMessage = document.getElementById("login-error-message");
+          errorMessage.textContent = response.message;
+          errorMessage.style.display = "block";
         }
-      },
-
-      error: function () {
-        $("#login-error-message").text("An unexpected error occurred. Please try again.").show();
-      },
-    });
+      })
+      .catch(() => {
+        const errorMessage = document.getElementById("login-error-message");
+        errorMessage.textContent = "An unexpected error occurred. Please try again.";
+        errorMessage.style.display = "block";
+      });
   });
 }
 
-$(document).ready(initLoginForm);
+document.addEventListener("DOMContentLoaded", initLoginForm);
