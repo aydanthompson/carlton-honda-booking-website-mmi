@@ -5,6 +5,21 @@
   font-optical-sizing: auto;
 }
 
+.brand-title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-optical-sizing: auto;
+  text-decoration: underline;
+  text-decoration-color: #cc0000;
+  text-underline-offset: 0.33em;
+}
+
+.align-higher {
+  position: relative;
+  top: -2px;
+}
+
 .calendar-header {
   padding: 10px;
   color: #fff;

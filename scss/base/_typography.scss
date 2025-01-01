@@ -1,3 +1,5 @@
+@use "../abstracts/variables" as vars;
+
 @mixin montserrat($weight: 400) {
   font-family: "Montserrat", sans-serif;
   font-weight: $weight;
@@ -7,4 +9,11 @@
 
 * {
   @include montserrat(400);
+}
+
+.brand-title {
+  @include montserrat(500);
+  text-decoration: underline;
+  text-decoration-color: vars.$primary-color;
+  text-underline-offset: 0.33em;
 }
