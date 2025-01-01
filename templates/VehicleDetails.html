@@ -1,0 +1,22 @@
+{% extends "Layout.html" %} {% block title %} · Vehicle Details{% endblock %} {% block content %}
+<h1>Vehicle Details</h1>
+{% if error %}
+<div class="alert alert-danger alert-warning">{{ error|raw }}</div>
+{% else %}
+<table class="table table-striped">
+  <tbody>
+    {% for key, value in data %}
+    <tr>
+      <!-- Green text for keys from DVLA API with no formatted key. -->
+      <!-- Red text for formatted keys that have no value from DVLA API. -->
+      <th class="{% if key in keysNoValueFromApi %}text-success{% elseif key in keysNoMapping %}text-danger{% endif %}">
+        {{ key }}
+      </th>
+      <td class="{% if key in keysNoValueFromApi %}text-success{% elseif key in keysNoMapping %}text-danger{% endif %}">
+        {{ value }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %} {% endblock %}

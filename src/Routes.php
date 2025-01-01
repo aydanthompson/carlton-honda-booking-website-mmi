@@ -10,6 +10,7 @@ use CarltonHonda\Controller\Logout;
 use CarltonHonda\Controller\ManageBookingsController;
 use CarltonHonda\Controller\Page;
 use CarltonHonda\Controller\Register;
+use CarltonHonda\Controller\VehicleDetailsController;
 
 return [
   'routes' => [
@@ -56,6 +57,10 @@ return [
     'profile_manage_bookings_cancel' => [
       'path' => '/profile/manage-bookings/cancel',
       '_controller' => [ManageBookingsController::class, 'cancelBooking']
+    ],
+    'vehicle_details' => [
+      'path' => '/vehicle-details',
+      '_controller' => [VehicleDetailsController::class, 'dvlaVesCheck']
     ],
     'slug' => [
       'path' => '/{slug}',
