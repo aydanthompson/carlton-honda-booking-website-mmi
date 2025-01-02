@@ -61,6 +61,14 @@ class VehicleDetailsController
     curl_close($ch);
 
     $data = json_decode($result, true);
+
+    // Check for an error in the DVLA API response.
+    if (isset($data['errors'])) {
+      $html = $this->renderer->render('VehicleDetails', ['error' => 'We couldn\'t find that registration number.<br/>Please try again.']);
+      $this->response->setContent($html);
+      return $this->response;
+    }
+
     [$formattedData, $keysNoValueFromApi, $keysNoMapping] = $this->formatData($data);
 
     $html = $this->renderer->render('VehicleDetails', [
