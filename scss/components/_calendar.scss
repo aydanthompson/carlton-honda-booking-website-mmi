@@ -1,0 +1,138 @@
+@use "../abstracts/variables" as vars;
+@use "../base/typography" as fonts;
+
+@use "sass:color";
+
+.calendar-header {
+  padding: 10px;
+  color: vars.$secondary-color;
+  background-color: vars.$primary-color;
+  @include fonts.montserrat(900);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendar-header .month-name {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.calendar-header .prev-button,
+.calendar-header .next-button {
+  cursor: pointer;
+  font-size: 1.2em;
+  color: vars.$secondary-color;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.calendar-header .prev-button:hover,
+.calendar-header .next-button:hover {
+  background-color: vars.$secondary-color;
+  color: vars.$primary-color;
+}
+
+#calendar th,
+#calendar td {
+  width: calc(100% / 7);
+  height: 100%;
+  padding: 2px;
+  text-align: center;
+  border: none;
+}
+
+#calendar th {
+  font-size: 0.6em;
+}
+
+.calendar-day {
+  cursor: pointer;
+  position: relative;
+}
+
+.calendar-day.selected {
+  background-color: vars.$primary-color;
+  color: #fff;
+}
+
+.calendar-day.greyed-out {
+  background-color: #f0f0f0;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.modal-content .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-content .close-button i {
+  font-size: 24px;
+}
+
+.modal.fade-out {
+  animation: fadeOut 1s;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.spinner {
+  margin-top: 10px;
+}
+
+.timeslot-button {
+  cursor: pointer;
+  background-color: vars.$primary-color;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  margin: 2px;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  text-align: center;
+}
+
+.timeslot-button:hover {
+  background-color: color.scale(vars.$primary-color, $lightness: -10%);
+  color: #fff;
+}

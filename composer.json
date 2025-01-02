@@ -2,13 +2,15 @@
     "name": "aydan/carltonhondawebsitemmi",
     "description": "Carlton Honda Website",
     "require": {
-        "php": ">=7.0.0",
-        "filp/whoops": "~2.1",
-        "symfony/http-foundation": "^5.4",
-        "symfony/routing": "^5.4",
+        "php": "^8.3",
+        "filp/whoops": "^2.16",
+        "symfony/http-foundation": "^7.2",
+        "symfony/routing": "^7.2",
         "rdlowrey/auryn": "^1.4",
         "mustache/mustache": "^2.14",
-        "twig/twig": "~1.0"
+        "twig/twig": "^3.18",
+        "phpmailer/phpmailer": "^6.9",
+        "vlucas/phpdotenv": "^5.6"
     },
     "autoload": {
         "psr-4": {

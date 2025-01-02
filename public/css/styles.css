@@ -1,0 +1,161 @@
+* {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-optical-sizing: auto;
+}
+
+.brand-title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-optical-sizing: auto;
+  text-decoration: underline;
+  text-decoration-color: #cc0000;
+  text-underline-offset: 0.33em;
+}
+
+.align-higher {
+  position: relative;
+  top: -2px;
+}
+
+.calendar-header {
+  padding: 10px;
+  color: #fff;
+  background-color: #cc0000;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  font-optical-sizing: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendar-header .month-name {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.calendar-header .prev-button,
+.calendar-header .next-button {
+  cursor: pointer;
+  font-size: 1.2em;
+  color: #fff;
+  transition: background-color 0.3s, color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.calendar-header .prev-button:hover,
+.calendar-header .next-button:hover {
+  background-color: #fff;
+  color: #cc0000;
+}
+
+#calendar th,
+#calendar td {
+  width: 14.2857142857%;
+  height: 100%;
+  padding: 2px;
+  text-align: center;
+  border: none;
+}
+
+#calendar th {
+  font-size: 0.6em;
+}
+
+.calendar-day {
+  cursor: pointer;
+  position: relative;
+}
+
+.calendar-day.selected {
+  background-color: #cc0000;
+  color: #fff;
+}
+
+.calendar-day.greyed-out {
+  background-color: #f0f0f0;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.modal-content .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-content .close-button i {
+  font-size: 24px;
+}
+
+.modal.fade-out {
+  animation: fadeOut 1s;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.spinner {
+  margin-top: 10px;
+}
+
+.timeslot-button {
+  cursor: pointer;
+  background-color: #cc0000;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  margin: 2px;
+  transition: background-color 0.3s, color 0.3s;
+  text-align: center;
+}
+
+.timeslot-button:hover {
+  background-color: rgb(183.6, 0, 0);
+  color: #fff;
+}
+
+.text-success {
+  color: green !important;
+}
+
+.text-danger {
+  color: red !important;
+}

@@ -1,0 +1,38 @@
+{% extends "Layout.html" %} {% block title %} · Manage Bookings{% endblock %} {% block content %}
+<h1>Manage Bookings</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      {% if user.getRoleName() == 'employee' or user.getRoleName() == 'admin' %}
+      <th>User</th>
+      {% endif %}
+      <th>Service</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Created At</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for booking in bookings %}
+    <tr>
+      <td>{{ booking.id }}</td>
+      {% if user.getRoleName() == 'employee' or user.getRoleName() == 'admin' %}
+      <td>{{ booking.user_email }}</td>
+      {% endif %}
+      <td>{{ booking.service }}</td>
+      <td>{{ booking.date }}</td>
+      <td>{{ booking.time }}</td>
+      <td>{{ booking.created_at }}</td>
+      <td>
+        <form method="POST" action="/profile/manage-bookings/cancel">
+          <input type="hidden" name="bookingId" value="{{ booking.id }}" />
+          <button type="submit" class="btn btn-danger">Cancel</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

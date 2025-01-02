@@ -15,30 +15,33 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
 
-require __DIR__ . '/../vendor/autoload.php';
-
 error_reporting(E_ALL);
-
-$environment = 'development';
 
 // Error handler.
 $whoops = new Run;
-if ($environment !== 'production') {
+if ($_ENV['ENVIRONMENT'] !== 'production') {
   $whoops->pushHandler(new PrettyPageHandler);
 } else {
   $whoops->pushHandler(function ($e) {
-    echo 'TODO: User friendly error page and email functionality.';
+    // Very basic alert, redirects to homepage.
+    $script = '<script type="text/javascript">';
+    $script .= 'alert("An unexpected error has occured. Redirecting you to the homepage.");';
+    $script .= 'window.location.href = "/";';
+    $script .= '</script>';
+    echo $script;
   });
 }
 $whoops->register();
 
-$injector = require __DIR__ . '/Dependencies.php';
+$injector = require $_ENV['PRIVATE_DIR'] . '/src/Dependencies.php';
 
 $request = $injector->make(Request::class);
 $response = $injector->make(Response::class);
 
+session_start();
+
 // Load routes.
-$routesConfig = require __DIR__ . '/Routes.php';
+$routesConfig = require $_ENV['PRIVATE_DIR'] . '/src/Routes.php';
 $routes = new RouteCollection();
 foreach ($routesConfig['routes'] as $name => $route) {
   $routes->add($name, new Route($route['path'], ['_controller' => $route['_controller']]));
@@ -54,18 +57,16 @@ try {
   $controller = $attributes['_controller'];
   unset($attributes['_controller']);
 
-  if (is_array($controller)) {
-    // Controller is a class name and method.
-    $className = $controller[0];
-    $class = $injector->make($className);
-    $method = $controller[1];
-    $controllerInstance = [$class, $method];
-  } else {
-    // Controller is a callable.
-    $controllerInstance = $controller;
-  }
+  $className = $controller[0];
+  $class = $injector->make($className);
+  $method = $controller[1];
+  $controllerInstance = [$class, $method];
 
-  call_user_func($controllerInstance, $attributes);
+  $result = call_user_func($controllerInstance, $attributes);
+  // Controller methods that return response objects override the default response.
+  if ($result instanceof Response) {
+    $response = $result;
+  }
 } catch (ResourceNotFoundException $e) {
   $response->setContent('404 - Page not found');
   $response->setStatusCode(404);

@@ -1,3 +1,17 @@
-{% extends "Layout.html" %} {% block content %}
-<h1>Hello World</h1>
-Hello {{ name }} {% endblock %}
+{% extends "Layout.html" %} {% block title %} · Home {% endblock %} {% block content %}
+<div class="text-center mt-5">
+  {% if user %}
+  <h1>Welcome, {{ user.email }}!</h1>
+  {% else %}
+  <h1>Welcome!</h1>
+  {% endif %}
+  <h3>Check your vehicle's MOT status<br />by entering the registration number below</h3>
+  <form id="vehicle-reg-form" method="GET" action="/vehicle-details" class="d-inline-block mt-3">
+    <div class="form-group">
+      <label for="reg" class="sr-only">Registration Number</label>
+      <input type="text" class="form-control" name="reg" placeholder="TE57 VRN" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Check</button>
+  </form>
+</div>
+{% endblock %}
