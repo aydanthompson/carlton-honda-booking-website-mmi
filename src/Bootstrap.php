@@ -23,7 +23,12 @@ if ($_ENV['ENVIRONMENT'] !== 'production') {
   $whoops->pushHandler(new PrettyPageHandler);
 } else {
   $whoops->pushHandler(function ($e) {
-    echo 'TODO: User friendly error page and email functionality.';
+    // Very basic alert, redirects to homepage.
+    $script = '<script type="text/javascript">';
+    $script .= 'alert("An unexpected error has occured. Redirecting you to the homepage.");';
+    $script .= 'window.location.href = "/";';
+    $script .= '</script>';
+    echo $script;
   });
 }
 $whoops->register();
